@@ -6,7 +6,6 @@ using deploy_test.DTO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using deploy_test.Models;
-using DTO;
 
 
 namespace deploy_test.Controllers

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace backend_database_HTTP_Requests.DTO
+namespace deploy_test.DTO
 {
     public class AddBook
     {
