@@ -1,7 +1,7 @@
 using deploy_test.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace deplot_test.Data
+namespace deploy_test.Data
 {
     public class Context : DbContext
     {

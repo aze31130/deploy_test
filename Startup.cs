@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using deploy_test.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.OpenApi.Models;
 
 namespace deploy_test
 {
@@ -24,6 +22,20 @@ namespace deploy_test
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<Context>(opt =>
+            {
+                opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+            });
+            services.AddSwaggerGen(swagger =>
+            {
+                //This is to generate the Default UI of Swagger Documentation  
+                swagger.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Deploy test API",
+                    Description = "ASP.NET Core 3.1 Web API Documentaion"
+                });
+            });
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -41,6 +53,8 @@ namespace deploy_test
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
             else
             {
