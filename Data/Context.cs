@@ -1,3 +1,4 @@
+using deploy_test.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace deplot_test.Data
