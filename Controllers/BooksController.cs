@@ -38,5 +38,32 @@ namespace deploy_test.Controllers
 
             return await book.ToListAsync();
         }
+		[HttpPost]
+        public async Task<ActionResult<AddBook>> Add_Books(AddBook bookDTO)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var book = new Book()
+            {
+                isbn = bookDTO.ISBN,
+                price = bookDTO.Book_price
+            };
+            await _context.Book.AddAsync(book);
+            await _context.SaveChangesAsync();
+
+            var book_description = new Book_description()
+            {
+                book_id = book.id,
+                book_name = bookDTO.Book_name,
+                book_description = bookDTO.Book_description
+            };
+            await _context.AddAsync(book_description);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetBooks", new { id = book.id}, bookDTO);
+        }
     }
 }
