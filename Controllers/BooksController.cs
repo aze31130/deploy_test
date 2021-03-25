@@ -38,6 +38,30 @@ namespace deploy_test.Controllers
 
             return await book.ToListAsync();
         }
+		
+		[HttpGet("{id}")]
+        public ActionResult<BookDTO> GetBooks_byId(int id)
+        {
+            var book = from books in _context.Book
+            join book_descriptions in _context.Book_Description on books.id equals book_descriptions.book_id
+            select new BookDTO
+            {
+                Book_id = books.id,
+                Book_price = books.price,
+                ISBN = books.isbn,
+                Book_name = book_descriptions.book_name,
+                Book_description = book_descriptions.book_description
+            };
+
+            var book_by_id = book.ToList().Find(x => x.Book_id == id);
+
+            if (book_by_id == null)
+            {
+                return NotFound();
+            }
+            return book_by_id;
+        }
+		
 		[HttpPost]
         public async Task<ActionResult<AddBook>> Add_Books(AddBook bookDTO)
         {
@@ -65,7 +89,8 @@ namespace deploy_test.Controllers
 
             return CreatedAtAction("GetBooks", new { id = book.id}, bookDTO);
         }
-	[HttpDelete("{id}")]
+		
+		[HttpDelete("{id}")]
         public async Task<ActionResult<Book>> Delete_Book(int id)
         {
             var book = _context.Book.Find(id);
@@ -83,6 +108,7 @@ namespace deploy_test.Controllers
                 return book;
             }
         }
+		
         [HttpPut("{id}")]
         public async Task<ActionResult> Update_Books(int id, BookDTO book)
         {
