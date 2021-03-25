@@ -65,5 +65,23 @@ namespace deploy_test.Controllers
 
             return CreatedAtAction("GetBooks", new { id = book.id}, bookDTO);
         }
+	[HttpDelete("{id}")]
+        public async Task<ActionResult<Book>> Delete_Book(int id)
+        {
+            var book = _context.Book.Find(id);
+            var book_description = _context.Book_Description.SingleOrDefault(x => x.book_id == id);
+
+            if(book == null)
+            {
+                return NotFound();
+            }
+            else 
+            {
+                _context.Remove(book);
+                _context.Remove(book_description);
+                await _context.SaveChangesAsync();
+                return book;
+            }
+        }
     }
 }
