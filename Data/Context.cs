@@ -6,7 +6,7 @@ namespace deploy_test.Data
     public class Context : DbContext
     {
         public Context(DbContextOptions<Context> options) : base(options) { }
-        public DbSet<Book> Book { get; set; }
-        public DbSet<Book_description> Book_Description { get; set; }
+        public DbSet<Book> books { get; set; }
+        public DbSet<User> users { get; set; }
     }
 }
